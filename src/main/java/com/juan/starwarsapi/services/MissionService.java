@@ -149,11 +149,10 @@ public class MissionService {
      * @param mission
      * @return boolean
      */
-    private boolean checkCaptains(Set<People> captains, Mission mission) { // TODO hacerlo en consulta jpql eficiente
+    private boolean checkCaptains(Set<People> captains, Mission mission) {
         for(People p : captains){
-            for(Mission m : missionRepository.findMissionByCaptain(mission.getId()))
-                if(m.getCaptains().contains(p))
-                    return true;
+            if(!missionRepository.findMissionByCaptain(p,mission.getId()).isEmpty())
+                return true;
         }
         return false;
     }
