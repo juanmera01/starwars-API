@@ -4,8 +4,7 @@ package com.juan.starwarsapi.entities;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Entity
 public class Mission {
@@ -14,19 +13,22 @@ public class Mission {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private LocalDateTime initialDate;
-    @ManyToOne
+
+    @OneToOne
     @JoinColumn(name = "starship_id")
     private Starship starShip;
-    @OneToMany(mappedBy = "people_id")
-    private List<People> captains = new ArrayList<>();
-    @OneToMany(mappedBy = "planet_id")
-    private List<Planet> planets = new ArrayList<>();
+
+    @OneToMany(mappedBy = "mission", cascade=CascadeType.ALL)
+    private Set<People> captains = new HashSet<>();
+    @OneToMany(mappedBy = "mission", cascade=CascadeType.ALL)
+    private Set<Planet> planets = new HashSet<>();
+
     private int crew;
     private int duration;
 
     public Mission(){}
 
-    public Mission(long id, LocalDateTime initialDate, Starship starShip, List<People> captains, List<Planet> planets, int crew) {
+    public Mission(long id, LocalDateTime initialDate, Starship starShip, Set<People> captains, Set<Planet> planets, int crew) {
         this.id = id;
         this.initialDate = initialDate;
         this.starShip = starShip;
@@ -47,11 +49,11 @@ public class Mission {
         return starShip;
     }
 
-    public List<People> getCaptains() {
+    public Set<People> getCaptains() {
         return captains;
     }
 
-    public List<Planet> getPlanets() {
+    public Set<Planet> getPlanets() {
         return planets;
     }
 
@@ -75,11 +77,11 @@ public class Mission {
         this.starShip = starShip;
     }
 
-    public void setCaptains(List<People> captains) {
+    public void setCaptains(Set<People> captains) {
         this.captains = captains;
     }
 
-    public void setPlanets(List<Planet> planets) {
+    public void setPlanets(Set<Planet> planets) {
         this.planets = planets;
     }
 
@@ -102,5 +104,18 @@ public class Mission {
                 ", crew=" + crew +
                 ", duration=" + duration + " (hours)" +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Mission mission = (Mission) o;
+        return getId() == mission.getId();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
     }
 }

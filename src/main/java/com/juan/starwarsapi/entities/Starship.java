@@ -1,8 +1,6 @@
 package com.juan.starwarsapi.entities;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -61,8 +59,11 @@ public class Starship {
     private String passengers;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "people_id")
-    private transient List<People> pilots = new ArrayList<>();
+    @ManyToMany
+    private Set<People> pilots = new HashSet<>();
+    @OneToOne
+    @JoinColumn(name = "id")
+    private Mission mission;
 
     @SerializedName("starship_class")
     @Expose
@@ -82,7 +83,7 @@ public class Starship {
                     String costInCredits, String created, String crew, String edited,
                     String hyperdriveRating, String length, String manufacturer,
                     String maxAtmospheringSpeed, String model, String name, String passengers,
-                    List<People> pilots, String starshipClass, String url) {
+                    Set<People> pilots, String starshipClass, String url) {
         this.mglt = mglt;
         this.cargoCapacity = cargoCapacity;
         this.consumables = consumables;
@@ -143,7 +144,7 @@ public class Starship {
     }
 
     public int getCrew() {
-        return Integer.parseInt(crew);
+        return parseNumber(crew);
     }
 
     public void setCrew(String crew) {
@@ -207,18 +208,18 @@ public class Starship {
     }
 
     public int getPassengers() {
-        return Integer.parseInt(passengers);
+        return parseNumber(passengers);
     }
 
     public void setPassengers(String passengers) {
         this.passengers = passengers;
     }
 
-    public List<People> getPilots() {
+    public Set<People> getPilots() {
         return pilots;
     }
 
-    public void setPilots(List<People> pilots) {
+    public void setPilots(Set<People> pilots) {
         this.pilots = pilots;
     }
 
@@ -244,6 +245,22 @@ public class Starship {
 
     public void setId(long id){
         this.starship_id = id;
+    }
+
+    public void setStarship_id(long starship_id) {
+        this.starship_id = starship_id;
+    }
+
+    public void setMissions(Mission mission) {
+        this.mission = mission;
+    }
+
+    public long getStarship_id() {
+        return starship_id;
+    }
+
+    public Mission getMissions() {
+        return mission;
     }
 
     @Override
@@ -337,6 +354,20 @@ public class Starship {
             sb.append(']');
         }
         return sb.toString();
+    }
+
+    private int parseNumber(String number){
+        if(number.equals("n/a"))
+            return -1;
+        if(number.equals("unknow"))
+            return -1;
+        String[] nubmerParts = number.split("-");
+        if(nubmerParts.length > 1)
+            return Integer.parseInt(nubmerParts[1]);
+        nubmerParts = number.split(",");
+        if(nubmerParts.length > 1)
+            return Integer.parseInt(nubmerParts[0]+nubmerParts[1]);
+        return Integer.parseInt(passengers);
     }
 
 }

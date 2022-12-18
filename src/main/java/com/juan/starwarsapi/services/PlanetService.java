@@ -4,19 +4,28 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.juan.starwarsapi.entities.People;
 import com.juan.starwarsapi.entities.Planet;
 import com.juan.starwarsapi.repositories.PlanetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Optional;
 
+@Transactional
 @Service
 public class PlanetService {
 
     @Autowired
     private PlanetRepository planetRepository;
+
+    public Planet getById(long id){
+        Optional<Planet> oplanet = planetRepository.findById(id);
+        return oplanet.orElse(null);
+    }
 
     public void loadData(){
         Gson gson = new GsonBuilder()
@@ -34,7 +43,6 @@ public class PlanetService {
             JsonObject json = jsonElement.getAsJsonObject();
             for (JsonElement o : json.get("results").getAsJsonArray()) {
                 Planet planet = gson.fromJson(o, Planet.class);
-
                 planetRepository.save(planet);
             }
             try {

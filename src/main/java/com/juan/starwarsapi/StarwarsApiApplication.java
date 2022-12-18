@@ -1,6 +1,7 @@
 package com.juan.starwarsapi;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.juan.starwarsapi.services.MissionService;
 import com.juan.starwarsapi.services.PeopleService;
 import com.juan.starwarsapi.services.PlanetService;
 import com.juan.starwarsapi.services.StarshipService;
@@ -19,12 +20,15 @@ public class StarwarsApiApplication {
     public PeopleService peopleService;
     @Autowired
     public PlanetService planetService;
+    @Autowired
+    public MissionService missionService;
 
     @PostConstruct
     public void postcontruct() {
-        starshipService.loadData();
-        peopleService.loadData();
-        planetService.loadData();
+        //starshipService.loadData();
+        //peopleService.loadData();
+        //planetService.loadData();
+        missionService.loadTestData();
     }
 
 

@@ -5,9 +5,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 public class People {
@@ -51,8 +49,12 @@ public class People {
     private String edited;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "starship_id")
-    private List<Starship> starships = new ArrayList<>();
+    @ManyToMany
+    private Set<Starship> starships = new HashSet<>();
+
+    @ManyToOne
+    @JoinColumn(name = "mission_id")
+    private Mission mission;
 
     @SerializedName("url")
     @Expose
@@ -63,7 +65,7 @@ public class People {
     public People(String birthYear, String eyeColor,
                   String gender, String hairColor, String height, String homeworld,
                   String mass, String name, String skinColor, String created,
-                  String edited, List<Starship> starships,
+                  String edited, Set<Starship> starships,
                   String url) {
         this.birthYear = birthYear;
         this.eyeColor = eyeColor;
@@ -168,11 +170,11 @@ public class People {
         this.edited = edited;
     }
 
-    public List<Starship> getStarships() {
+    public Set<Starship> getStarships() {
         return starships;
     }
 
-    public void setStarships(List<Starship> starships) {
+    public void setStarships(Set<Starship> starships) {
         this.starships = starships;
     }
 
@@ -188,8 +190,12 @@ public class People {
         return people_id;
     }
 
-    public void setId(long people_id) {
-        this.people_id = people_id;
+    public Mission getMission() {
+        return mission;
+    }
+
+    public void setMission(Mission mission) {
+        this.mission = mission;
     }
 
     @Override

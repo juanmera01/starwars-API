@@ -11,6 +11,6 @@ public interface MissionRepository extends CrudRepository<Mission, Long> {
 
     List<Mission> findAll();
 
-    @Query("SELECT m from Mission m where ?1 in (m.captains)")
-    List<Mission> findMissionByCaptain(People captain);
+    @Query("SELECT m from Mission m where m.id <> ?1")
+    List<Mission> findMissionByCaptain(long mission_id);
 }

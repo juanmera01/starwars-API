@@ -4,10 +4,7 @@ import java.util.Objects;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 
 @Entity
@@ -50,6 +47,11 @@ public class Planet {
     @SerializedName("terrain")
     @Expose
     private String terrain;
+
+    @ManyToOne
+    @JoinColumn(name = "mission_id")
+    private Mission mission;
+
 
     /**
      * No args constructor for use in serialization
@@ -170,6 +172,14 @@ public class Planet {
 
     public void setId(long id){
         this.planet_id = id;
+    }
+
+    public void setMission(Mission mission) {
+        this.mission = mission;
+    }
+
+    public Mission getMission() {
+        return mission;
     }
 
     @Override
