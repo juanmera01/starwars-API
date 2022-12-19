@@ -184,58 +184,11 @@ public class Planet {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(Starship.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
-        sb.append("climate");
-        sb.append('=');
-        sb.append(((this.climate == null)?"<null>":this.climate));
-        sb.append(',');
-        sb.append("created");
-        sb.append('=');
-        sb.append(((this.created == null)?"<null>":this.created));
-        sb.append(',');
-        sb.append("diameter");
-        sb.append('=');
-        sb.append(this.diameter);
-        sb.append(',');
-        sb.append("edited");
-        sb.append('=');
-        sb.append(((this.edited == null)?"<null>":this.edited));
-        sb.append(',');
-        sb.append("gravity");
-        sb.append('=');
-        sb.append(((this.gravity == null)?"<null>":this.gravity));
-        sb.append(',');
-        sb.append("name");
-        sb.append('=');
-        sb.append(((this.name == null)?"<null>":this.name));
-        sb.append(',');
-        sb.append("orbitalPeriod");
-        sb.append('=');
-        sb.append(((this.orbitalPeriod == null)?"<null>":this.orbitalPeriod));
-        sb.append(',');
-        sb.append("population");
-        sb.append('=');
-        sb.append(((this.population == null)?"<null>":this.population));
-        sb.append(',');
-        sb.append("rotationPeriod");
-        sb.append('=');
-        sb.append(((this.rotationPeriod == null)?"<null>":this.rotationPeriod));
-        sb.append(',');
-        sb.append("surfaceWater");
-        sb.append('=');
-        sb.append(((this.surfaceWater == null)?"<null>":this.surfaceWater));
-        sb.append(',');
-        sb.append("terrain");
-        sb.append('=');
-        sb.append(((this.terrain == null)?"<null>":this.terrain));
-        sb.append(',');
-        if (sb.charAt((sb.length()- 1)) == ',') {
-            sb.setCharAt((sb.length()- 1), ']');
-        } else {
-            sb.append(']');
-        }
-        return sb.toString();
+        return "{" +
+                "\"id\" :" + "\"" + planet_id + "\"" +
+                "\"name\" :" + "\"" + name + "\"" +
+                "\"diameterKM\" :" + "\"" + diameter + "\"" +
+                "}";
     }
 
     @Override

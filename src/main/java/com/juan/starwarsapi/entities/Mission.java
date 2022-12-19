@@ -95,14 +95,15 @@ public class Mission {
 
     @Override
     public String toString() {
-        return "Mission{" +
-                "id=" + id +
-                ", initialDate=" + initialDate +
-                ", starShip=" + starShip +
-                ", captains=" + captains +
-                ", planets=" + planets +
-                ", crew=" + crew +
-                ", duration=" + duration + " (hours)" +
+        return "{" +
+                "\"id\": " + "\""+id +"\""+
+                "\"initialDate\": " + "\""+initialDate +"\"" +
+                "\"endDate\": " + "\""+initialDate.plusHours(duration) +"\"" +
+                "\"starship\": " + starShip +
+                "\"captains\": " + captains.stream().map(c -> c.toString())  +
+                "\"planets\": " +planets.stream().map(p -> p.toString())  +
+                "\"crew\": " + "\""+crew +"\"" +
+                "\"durationHours\": " + "\""+duration +"\"" +
                 '}';
     }
 

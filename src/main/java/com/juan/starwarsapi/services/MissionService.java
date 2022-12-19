@@ -7,6 +7,8 @@ import com.juan.starwarsapi.repositories.PeopleRepository;
 import com.juan.starwarsapi.repositories.PlanetRepository;
 import com.juan.starwarsapi.repositories.StarshipRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -85,8 +87,11 @@ public class MissionService {
     /**
      * @return All Missions
      */
-    public List<Mission> getAllMissions(){
-        return missionRepository.findAll();
+    public Page<Mission> getAllMissions(Pageable pageable, String captainNames){
+        if(captainNames.equals(""))
+            return missionRepository.findAll(pageable);
+        else
+            return missionRepository.findMissionByCaptainNames(pageable, captainNames);
     }
 
     /**
