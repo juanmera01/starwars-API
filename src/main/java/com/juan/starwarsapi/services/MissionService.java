@@ -29,10 +29,10 @@ public class MissionService {
     private PlanetRepository planetRepository;
 
 
-    public Object addMission(CreateMissionRequest missionRequest){
+    public Mission addMission(CreateMissionRequest missionRequest){
         List<String> errors = validateParams(missionRequest);
         if(!errors.isEmpty())
-            return errors;
+            return null;
         Mission mission = new Mission();
         missionRepository.save(mission);
         mission.setInitialDate(missionRequest.initialDate);
@@ -54,7 +54,7 @@ public class MissionService {
             return mission;
         }else{
             missionRepository.delete(mission);
-            return errors;
+            return null;
         }
     }
 
@@ -98,8 +98,8 @@ public class MissionService {
      * @param id
      * @return mission
      */
-    public Optional<Mission> getMissionById(long id){
-        return missionRepository.findById(id);
+    public Mission getMissionById(long id){
+        return missionRepository.findById(id).orElse(null);
     }
 
     /**

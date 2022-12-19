@@ -278,82 +278,12 @@ public class Starship {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(Starship.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
-        sb.append("mglt");
-        sb.append('=');
-        sb.append(((this.mglt == null)?"<null>":this.mglt));
-        sb.append(',');
-        sb.append("cargoCapacity");
-        sb.append('=');
-        sb.append(((this.cargoCapacity == null)?"<null>":this.cargoCapacity));
-        sb.append(',');
-        sb.append("consumables");
-        sb.append('=');
-        sb.append(((this.consumables == null)?"<null>":this.consumables));
-        sb.append(',');
-        sb.append("costInCredits");
-        sb.append('=');
-        sb.append(((this.costInCredits == null)?"<null>":this.costInCredits));
-        sb.append(',');
-        sb.append("created");
-        sb.append('=');
-        sb.append(((this.created == null)?"<null>":this.created));
-        sb.append(',');
-        sb.append("crew");
-        sb.append('=');
-        sb.append(this.crew);
-        sb.append(',');
-        sb.append("edited");
-        sb.append('=');
-        sb.append(((this.edited == null)?"<null>":this.edited));
-        sb.append(',');
-        sb.append("hyperdriveRating");
-        sb.append('=');
-        sb.append(((this.hyperdriveRating == null)?"<null>":this.hyperdriveRating));
-        sb.append(',');
-        sb.append("length");
-        sb.append('=');
-        sb.append(((this.length == null)?"<null>":this.length));
-        sb.append(',');
-        sb.append("manufacturer");
-        sb.append('=');
-        sb.append(((this.manufacturer == null)?"<null>":this.manufacturer));
-        sb.append(',');
-        sb.append("maxAtmospheringSpeed");
-        sb.append('=');
-        sb.append(((this.maxAtmospheringSpeed == null)?"<null>":this.maxAtmospheringSpeed));
-        sb.append(',');
-        sb.append("model");
-        sb.append('=');
-        sb.append(((this.model == null)?"<null>":this.model));
-        sb.append(',');
-        sb.append("name");
-        sb.append('=');
-        sb.append(((this.name == null)?"<null>":this.name));
-        sb.append(',');
-        sb.append("passengers");
-        sb.append('=');
-        sb.append(this.passengers);
-        sb.append(',');
-        sb.append("pilots");
-        sb.append('=');
-        sb.append(((this.pilots == null)?"<null>":this.pilots));
-        sb.append(',');
-        sb.append("starshipClass");
-        sb.append('=');
-        sb.append(((this.starshipClass == null)?"<null>":this.starshipClass));
-        sb.append(',');
-        sb.append("url");
-        sb.append('=');
-        sb.append(((this.url == null)?"<null>":this.url));
-        sb.append(',');
-        if (sb.charAt((sb.length()- 1)) == ',') {
-            sb.setCharAt((sb.length()- 1), ']');
-        } else {
-            sb.append(']');
-        }
-        return sb.toString();
+        return "{" +
+                "\"id\" :" + "\"" + starship_id + "\"," +
+                "\"name\" :" + "\"" + name + "\"," +
+                "\"crew\" :" + "\"" + crew + "\"," +
+                "\"passengers\" :" + "\"" + passengers + "\"," +
+                "}";
     }
 
     private int parseNumber(String number){

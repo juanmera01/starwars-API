@@ -214,7 +214,7 @@ public class People {
     @Override
     public String toString(){
         return "{" +
-                "\"id\" : " + "\"" + people_id +"\"" +
+                "\"id\" : " + "\"" + people_id +"\"," +
                 "\"name\" : " + "\"" + name +"\"" +
                 "}";
     }

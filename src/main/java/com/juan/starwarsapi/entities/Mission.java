@@ -96,13 +96,13 @@ public class Mission {
     @Override
     public String toString() {
         return "{" +
-                "\"id\": " + "\""+id +"\""+
-                "\"initialDate\": " + "\""+initialDate +"\"" +
-                "\"endDate\": " + "\""+initialDate.plusHours(duration) +"\"" +
-                "\"starship\": " + starShip +
-                "\"captains\": " + captains.stream().map(c -> c.toString())  +
-                "\"planets\": " +planets.stream().map(p -> p.toString())  +
-                "\"crew\": " + "\""+crew +"\"" +
+                "\"id\": " + "\""+id +"\","+
+                "\"initialDate\": " + "\""+initialDate +"\"," +
+                "\"endDate\": " + "\""+initialDate.plusHours(duration) +"\"," +
+                "\"starship\": " + starShip + "," +
+                "\"captains\": " + captains.stream().map(People::toString).toList()  + "," +
+                "\"planets\": " + planets.stream().map(Planet::toString).toList()  + "," +
+                "\"crew\": " + "\""+crew +"\"," +
                 "\"durationHours\": " + "\""+duration +"\"" +
                 '}';
     }

@@ -185,8 +185,8 @@ public class Planet {
     @Override
     public String toString() {
         return "{" +
-                "\"id\" :" + "\"" + planet_id + "\"" +
-                "\"name\" :" + "\"" + name + "\"" +
+                "\"id\" :" + "\"" + planet_id + "\"," +
+                "\"name\" :" + "\"" + name + "\"," +
                 "\"diameterKM\" :" + "\"" + diameter + "\"" +
                 "}";
     }
