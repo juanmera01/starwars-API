@@ -98,7 +98,7 @@ public class Mission {
                 "\"captains\": " + captains.stream().map(People::toString).toList()  + "," +
                 "\"planets\": " + planets.stream().map(Planet::toString).toList()  + "," +
                 "\"crew\": " + "\""+crew +"\"," +
-                "\"durationHours\": " + "\""+duration +"\"" +
+                "\"durationHours\": " + "\""+duration +"\"," +
                 "\"reward\": " + "\""+reward +"\"" +
                 '}';
     }

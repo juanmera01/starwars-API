@@ -8,6 +8,10 @@ public class MissionRewardComparator implements Comparator<Mission> {
 
     @Override
     public int compare(Mission m1, Mission m2) {
-        return Double.compare(m1.getReward(), m2.getReward());
+        if(m1.getReward() > m2.getReward())
+            return -1;
+        if(m2.getReward() < m2.getReward())
+            return 1;
+        return 0;
     }
 }

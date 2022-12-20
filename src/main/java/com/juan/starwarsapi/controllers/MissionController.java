@@ -10,8 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -60,6 +62,7 @@ public class MissionController {
         HttpServletRequest request =
                 ((ServletRequestAttributes)(Objects.requireNonNull(RequestContextHolder.getRequestAttributes())))
                         .getRequest();
+        sbMission.append("{");
         sbMission.append("\"current\":\""+ request.getRequestURL().toString() + "?" + request.getQueryString() + "\",");
         sbMission.append("\"results\":[");
         for(Mission m : missionPage.getContent()){
@@ -69,7 +72,7 @@ public class MissionController {
                 sbMission.append(m.toString());
         }
         sbMission.append("]");
-
+        sbMission.append("}");
         return ResponseEntity.ok().body(sbMission.toString());
     }
 
@@ -121,6 +124,19 @@ public class MissionController {
                 return ResponseEntity.ok(m != null?m.toString():"no missions left");
             default: return ResponseEntity.badRequest().build();
         }
+    }
+
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    public ResponseEntity<String> handleMissingParams(MissingServletRequestParameterException ex) {
+        String name = ex.getParameterName();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body("The required parameter " + name + " is missing");
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Object> exception(Exception ex) {
+        // log ...
+        return ResponseEntity.badRequest().build();
     }
 }
 

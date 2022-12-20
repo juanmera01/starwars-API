@@ -243,7 +243,7 @@ public class Starship {
                 "\"id\" :" + "\"" + starship_id + "\"," +
                 "\"name\" :" + "\"" + name + "\"," +
                 "\"crew\" :" + "\"" + crew + "\"," +
-                "\"passengers\" :" + "\"" + passengers + "\"," +
+                "\"passengers\" :" + "\"" + passengers + "\"" +
                 "}";
     }
 
