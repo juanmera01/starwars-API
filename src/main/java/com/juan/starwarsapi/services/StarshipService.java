@@ -1,18 +1,14 @@
 package com.juan.starwarsapi.services;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.juan.starwarsapi.entities.People;
-import com.juan.starwarsapi.entities.Planet;
 import com.juan.starwarsapi.entities.Starship;
-import com.juan.starwarsapi.entities.binder.Binder;
 import com.juan.starwarsapi.repositories.PeopleRepository;
 import com.juan.starwarsapi.repositories.StarshipRepository;
-import org.hibernate.sql.ast.tree.expression.Star;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;

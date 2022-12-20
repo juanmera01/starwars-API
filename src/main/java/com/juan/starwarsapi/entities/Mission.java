@@ -59,6 +59,9 @@ public class Mission {
     public int getDuration() {
         return duration;
     }
+    public double getReward() {
+        return reward;
+    }
     public void setId(long id) {
         this.id = id;
     }
@@ -80,9 +83,7 @@ public class Mission {
     public void setDuration(int duration) {
         this.duration = duration;
     }
-    public double getReward() {
-        return reward;
-    }
+
     public void setReward(double reward) {
         this.reward = reward;
     }

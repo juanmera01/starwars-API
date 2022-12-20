@@ -81,99 +81,75 @@ public class Planet {
     public String getClimate() {
         return climate;
     }
-
     public void setClimate(String climate) {
         this.climate = climate;
     }
-
     public String getCreated() {
         return created;
     }
-
     public void setCreated(String created) {
         this.created = created;
     }
-
     public int getDiameter() {
         return Integer.parseInt(diameter);
     }
-
     public void setDiameter(String diameter) {
         this.diameter = diameter;
     }
-
     public String getEdited() {
         return edited;
     }
-
     public void setEdited(String edited) {
         this.edited = edited;
     }
-
     public String getGravity() {
         return gravity;
     }
-
     public void setGravity(String gravity) {
         this.gravity = gravity;
     }
-
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
-
     public String getOrbitalPeriod() {
         return orbitalPeriod;
     }
-
     public void setOrbitalPeriod(String orbitalPeriod) {
         this.orbitalPeriod = orbitalPeriod;
     }
-
     public String getPopulation() {
         return population;
     }
-
     public void setPopulation(String population) {
         this.population = population;
     }
-
     public String getRotationPeriod() {
         return rotationPeriod;
     }
-
     public void setRotationPeriod(String rotationPeriod) {
         this.rotationPeriod = rotationPeriod;
     }
-
     public String getSurfaceWater() {
         return surfaceWater;
     }
-
     public void setSurfaceWater(String surfaceWater) {
         this.surfaceWater = surfaceWater;
     }
-
     public String getTerrain() {
         return terrain;
     }
-
     public void setTerrain(String terrain) {
         this.terrain = terrain;
     }
-
     public long getId(){
         return planet_id;
     }
-
     public void setId(long id){
         this.planet_id = id;
     }
-
     public void setMission(Mission mission) {
         this.mission = mission;
     }

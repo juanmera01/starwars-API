@@ -106,159 +106,120 @@ public class Starship {
     public String getMglt() {
         return mglt;
     }
-
     public void setMglt(String mglt) {
         this.mglt = mglt;
     }
-
     public String getCargoCapacity() {
         return cargoCapacity;
     }
-
     public void setCargoCapacity(String cargoCapacity) {
         this.cargoCapacity = cargoCapacity;
     }
-
     public String getConsumables() {
         return consumables;
     }
-
     public void setConsumables(String consumables) {
         this.consumables = consumables;
     }
-
     public String getCostInCredits() {
         return costInCredits;
     }
-
     public void setCostInCredits(String costInCredits) {
         this.costInCredits = costInCredits;
     }
-
     public String getCreated() {
         return created;
     }
-
     public void setCreated(String created) {
         this.created = created;
     }
-
     public int getCrew() {
         return parseNumber(crew);
     }
-
     public void setCrew(String crew) {
         this.crew = crew;
     }
-
     public String getEdited() {
         return edited;
     }
-
     public void setEdited(String edited) {
         this.edited = edited;
     }
-
     public String getHyperdriveRating() {
         return hyperdriveRating;
     }
-
     public void setHyperdriveRating(String hyperdriveRating) {
         this.hyperdriveRating = hyperdriveRating;
     }
-
     public String getLength() {
         return length;
     }
-
     public void setLength(String length) {
         this.length = length;
     }
-
     public String getManufacturer() {
         return manufacturer;
     }
-
     public void setManufacturer(String manufacturer) {
         this.manufacturer = manufacturer;
     }
-
     public String getMaxAtmospheringSpeed() {
         return maxAtmospheringSpeed;
     }
-
     public void setMaxAtmospheringSpeed(String maxAtmospheringSpeed) {
         this.maxAtmospheringSpeed = maxAtmospheringSpeed;
     }
-
     public String getModel() {
         return model;
     }
-
     public void setModel(String model) {
         this.model = model;
     }
-
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
-
     public int getPassengers() {
         return parseNumber(passengers);
     }
-
     public void setPassengers(String passengers) {
         this.passengers = passengers;
     }
-
     public Set<People> getPilots() {
         return pilots;
     }
-
     public void setPilots(Set<People> pilots) {
         this.pilots = pilots;
     }
-
     public String getStarshipClass() {
         return starshipClass;
     }
-
     public void setStarshipClass(String starshipClass) {
         this.starshipClass = starshipClass;
     }
-
     public String getUrl() {
         return url;
     }
-
     public void setUrl(String url) {
         this.url = url;
     }
-
     public long getId(){
         return starship_id;
     }
-
     public void setId(long id){
         this.starship_id = id;
     }
-
     public void setStarship_id(long starship_id) {
         this.starship_id = starship_id;
     }
-
     public void setMissions(Mission mission) {
         this.mission = mission;
     }
-
     public long getStarship_id() {
         return starship_id;
     }
-
     public Mission getMissions() {
         return mission;
     }

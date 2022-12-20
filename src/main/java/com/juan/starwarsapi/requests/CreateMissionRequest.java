@@ -1,7 +1,6 @@
 package com.juan.starwarsapi.requests;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import org.springframework.cglib.core.Local;
 
 import java.time.LocalDateTime;
 import java.util.List;

@@ -229,6 +229,33 @@ public class MissionService {
         m3.planet_ids = List.of(4L);
         m3.reward = 20000.00;
         addMission(m3);
+
+        CreateMissionRequest m4 = new CreateMissionRequest();
+        m4.initialDate = LocalDateTime.now();
+        m4.crew = 342960;
+        m4.starship_id = 4L;
+        m4.people_ids = List.of(7L);
+        m4.planet_ids = List.of(4L);
+        m4.reward = 9000.00;
+        addMission(m4);
+
+        CreateMissionRequest m5 = new CreateMissionRequest();
+        m5.initialDate = LocalDateTime.now();
+        m5.crew = 342960;
+        m5.starship_id = 4L;
+        m5.people_ids = List.of(10L);
+        m5.planet_ids = List.of(4L);
+        m5.reward = 9000.00;
+        addMission(m5);
+
+        CreateMissionRequest m6 = new CreateMissionRequest();
+        m6.initialDate = LocalDateTime.now();
+        m6.crew = 342960;
+        m6.starship_id = 4L;
+        m6.people_ids = List.of(11L);
+        m6.planet_ids = List.of(4L);
+        m6.reward = 9000.00;
+        addMission(m6);
     }
 
 }

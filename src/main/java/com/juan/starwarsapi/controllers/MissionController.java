@@ -5,6 +5,7 @@ import com.juan.starwarsapi.entities.Mission;
 import com.juan.starwarsapi.services.MissionService;
 import com.juan.starwarsapi.utils.MissionRewardComparator;
 import com.juan.starwarsapi.utils.MissionRewardPerHourComparator;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -12,11 +13,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.LinkedList;
-import java.util.Optional;
+import java.util.Objects;
 
 @RestController
 public class MissionController {
@@ -33,8 +36,10 @@ public class MissionController {
     public ResponseEntity<String> options(){
         String res = "{" +
                 "\"create missions-POST\": \"http://localhost:8090/missions\"," +
-                "\"list missions-GET\": \"http://localhost:8090/missions\"," +
-                "\"list mission-GET\": \"http://localhost:8090/missions/{id}\"," +
+                "\"list missions-GET\": \"http://localhost:8090/missions?page=1&size=5\"," +
+                "\"mission-GET\": \"http://localhost:8090/missions/{id}\"," +
+                "\"recommendator-reward\": \"http://localhost:8090/missions/next?criteria=reward\"," +
+                "\"recommendator-rewardPerHour\": \"http://localhost:8090/missions/next?criteria=rewardPerHour\"," +
                 "\"actual\": \"http://localhost:8090/\"" +
                 "}";
         return ResponseEntity.ok().body(res);
@@ -46,14 +51,20 @@ public class MissionController {
      * @param pageable
      * @return page<mission>
      */
-    @RequestMapping(value = "/missions", method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/missions", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> listAll
-            (@RequestParam Optional<String> search, Pageable pageable) {
+            (Pageable pageable, @RequestParam(required = false, defaultValue = "") String search) {
         Page<Mission> missionPage = new PageImpl<Mission>(new LinkedList<Mission>());
-        missionPage = missionService.getAllMissions(pageable, search.orElse(""));
-        StringBuilder sbMission = new StringBuilder();
-        sbMission.append("[");
+        missionPage = missionService.getAllMissions(pageable, search);
+        StringBuilder sbMission = new StringBuilder(); //TODO añadir como json un next y un prev y results: ...
+
+
+        HttpServletRequest request =
+                ((ServletRequestAttributes)(Objects.requireNonNull(RequestContextHolder.getRequestAttributes())))
+                        .getRequest();
+
+        sbMission.append("\"current\":\""+ request.getRequestURL().toString() + "?" + request.getQueryString() + "\",");
+        sbMission.append("\"results\":[");
         for(Mission m : missionPage.getContent()){
             if(missionPage.getContent().indexOf(m) != missionPage.getContent().size()-1)
                 sbMission.append(m.toString()).append(",");

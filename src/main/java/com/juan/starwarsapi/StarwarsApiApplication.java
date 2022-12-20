@@ -1,11 +1,13 @@
 package com.juan.starwarsapi;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+
 import com.juan.starwarsapi.services.MissionService;
 import com.juan.starwarsapi.services.PeopleService;
 import com.juan.starwarsapi.services.PlanetService;
 import com.juan.starwarsapi.services.StarshipService;
 import jakarta.annotation.PostConstruct;
+import org.apache.commons.logging.Log;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -25,10 +27,15 @@ public class StarwarsApiApplication {
 
     @PostConstruct
     public void postcontruct() {
-        //starshipService.loadData();
-        //peopleService.loadData();
-        //planetService.loadData();
-        //missionService.loadTestData();
+        try {
+            starshipService.loadData();
+            peopleService.loadData();
+            planetService.loadData();
+            missionService.loadTestData();
+        }catch(Exception e){
+            LoggerFactory.getLogger(Log.class).error("ERROR: loading the data - " + e.getMessage());
+        }
+        LoggerFactory.getLogger(Log.class).info("ALL DATA LOADED");
     }
 
 

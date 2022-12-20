@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.juan.starwarsapi.entities.People;
 import com.juan.starwarsapi.entities.Planet;
 import com.juan.starwarsapi.repositories.PlanetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
