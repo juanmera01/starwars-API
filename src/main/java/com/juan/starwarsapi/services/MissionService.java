@@ -6,6 +6,7 @@ import com.juan.starwarsapi.repositories.MissionRepository;
 import com.juan.starwarsapi.repositories.PeopleRepository;
 import com.juan.starwarsapi.repositories.PlanetRepository;
 import com.juan.starwarsapi.repositories.StarshipRepository;
+import com.juan.starwarsapi.requests.CreateMissionRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,7 +20,6 @@ import java.util.*;
 @Service
 public class MissionService {
 
-    @Autowired
     public MissionRepository missionRepository;
     @Autowired
     private StarshipRepository starshipRepository;
@@ -27,6 +27,14 @@ public class MissionService {
     private PeopleRepository peopleRepository;
     @Autowired
     private PlanetRepository planetRepository;
+
+    private final List<Mission> missionsToOrdered = new ArrayList<>();
+
+    @Autowired
+    public MissionService(MissionRepository missionRepository){
+        this.missionRepository = missionRepository;
+        missionsToOrdered.addAll(missionRepository.findAll());
+    }
 
     /**
      * Validate and create a mission
@@ -42,6 +50,7 @@ public class MissionService {
         missionRepository.save(mission);
         mission.setInitialDate(missionRequest.initialDate);
         mission.setCrew(missionRequest.crew);
+        mission.setReward(missionRequest.reward);
 
         Set<People> captains = new HashSet<>(missionRequest.people_ids
                 .stream().map(id -> peopleRepository.findById(id).orElse(null)).toList());
@@ -56,6 +65,7 @@ public class MissionService {
             Binder.bind(mission, starship);
             planets.forEach(p -> Binder.bind(mission, p));
             mission.setDuration(calculateDuration(mission));
+            missionsToOrdered.add(mission);
             return mission;
         }else{
             missionRepository.delete(mission);
@@ -171,6 +181,25 @@ public class MissionService {
     }
 
     /**
+     * Get the next mission ordered by the criteria recibed through params
+     * @param comparator (to order the missions)
+     * @return mission
+     */
+    public Mission getMissionBy(Comparator<Mission> comparator) {
+        if(missionsToOrdered.isEmpty())
+            return null;
+        PriorityQueue<Mission> queue = new PriorityQueue<>(missionsToOrdered.size(), comparator);
+        List<Mission> missionsNonTransient = new ArrayList<>();
+        for(Mission m : missionsToOrdered){
+            missionsNonTransient.add(missionRepository.findById(m.getId()).get());
+        }
+        queue.addAll(missionsNonTransient);
+        Mission selected = queue.poll();
+        missionsToOrdered.remove(selected);
+        return selected;
+    }
+
+    /**
      * Add manually a mission
      */
     public void loadTestData(){
@@ -180,6 +209,7 @@ public class MissionService {
         m1.starship_id = 3L;
         m1.people_ids = List.of(3L);
         m1.planet_ids = List.of(3L);
+        m1.reward = 10000.00;
         addMission(m1);
 
         CreateMissionRequest m2 = new CreateMissionRequest();
@@ -188,6 +218,7 @@ public class MissionService {
         m2.starship_id = 2L;
         m2.people_ids = List.of(2L);
         m2.planet_ids = List.of(2L);
+        m2.reward = 15000.00;
         addMission(m2);
 
         CreateMissionRequest m3 = new CreateMissionRequest();
@@ -196,6 +227,8 @@ public class MissionService {
         m3.starship_id = 4L;
         m3.people_ids = List.of(4L);
         m3.planet_ids = List.of(4L);
+        m3.reward = 20000.00;
         addMission(m3);
     }
+
 }

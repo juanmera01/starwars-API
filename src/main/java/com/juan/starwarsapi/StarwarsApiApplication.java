@@ -25,10 +25,10 @@ public class StarwarsApiApplication {
 
     @PostConstruct
     public void postcontruct() {
-        starshipService.loadData();
-        peopleService.loadData();
-        planetService.loadData();
-        missionService.loadTestData();
+        //starshipService.loadData();
+        //peopleService.loadData();
+        //planetService.loadData();
+        //missionService.loadTestData();
     }
 
 

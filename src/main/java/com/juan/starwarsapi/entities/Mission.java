@@ -25,6 +25,7 @@ public class Mission {
 
     private int crew;
     private int duration;
+    private double reward;
 
     public Mission(){}
 
@@ -40,57 +41,50 @@ public class Mission {
     public long getId() {
         return id;
     }
-
     public LocalDateTime getInitialDate() {
         return initialDate;
     }
-
     public Starship getStarShips() {
         return starShip;
     }
-
     public Set<People> getCaptains() {
         return captains;
     }
-
     public Set<Planet> getPlanets() {
         return planets;
     }
-
     public int getCrew() {
         return crew;
     }
-
     public int getDuration() {
         return duration;
     }
-
     public void setId(long id) {
         this.id = id;
     }
-
     public void setInitialDate(LocalDateTime initialDate) {
         this.initialDate = initialDate;
     }
-
-    public void setStarShips(Starship starShip) {
+    public void setStarShip(Starship starShip) {
         this.starShip = starShip;
     }
-
     public void setCaptains(Set<People> captains) {
         this.captains = captains;
     }
-
     public void setPlanets(Set<Planet> planets) {
         this.planets = planets;
     }
-
     public void setCrew(int crew) {
         this.crew = crew;
     }
-
     public void setDuration(int duration) {
         this.duration = duration;
+    }
+    public double getReward() {
+        return reward;
+    }
+    public void setReward(double reward) {
+        this.reward = reward;
     }
 
     @Override
@@ -104,6 +98,7 @@ public class Mission {
                 "\"planets\": " + planets.stream().map(Planet::toString).toList()  + "," +
                 "\"crew\": " + "\""+crew +"\"," +
                 "\"durationHours\": " + "\""+duration +"\"" +
+                "\"reward\": " + "\""+reward +"\"" +
                 '}';
     }
 

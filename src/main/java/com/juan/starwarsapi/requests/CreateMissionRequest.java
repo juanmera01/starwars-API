@@ -1,4 +1,4 @@
-package com.juan.starwarsapi.entities;
+package com.juan.starwarsapi.requests;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.cglib.core.Local;
@@ -14,4 +14,5 @@ public class CreateMissionRequest {
     public List<Long> people_ids;
     public List<Long> planet_ids;
     public int crew;
+    public double reward;
 }

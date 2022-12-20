@@ -13,7 +13,7 @@ public class Binder {
     }
 
     public static void bind(Mission mission, Starship starship){
-        mission.setStarShips(starship);
+        mission.setStarShip(starship);
         starship.setMissions(mission);
     }
 

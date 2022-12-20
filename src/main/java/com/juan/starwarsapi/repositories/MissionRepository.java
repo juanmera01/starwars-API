@@ -11,6 +11,8 @@ import java.util.List;
 
 public interface MissionRepository extends CrudRepository<Mission, Long> {
 
+    List<Mission> findAll();
+
     Page<Mission> findAll(Pageable pageable);
 
     @Query("SELECT m FROM Mission m WHERE m.id <> ?2 AND ?1 in (SELECT c FROM m.captains c)")

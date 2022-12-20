@@ -1,28 +1,21 @@
 package com.juan.starwarsapi.controllers;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.juan.starwarsapi.entities.CreateMissionRequest;
+import com.juan.starwarsapi.requests.CreateMissionRequest;
 import com.juan.starwarsapi.entities.Mission;
 import com.juan.starwarsapi.services.MissionService;
-import jakarta.servlet.http.HttpServletResponse;
+import com.juan.starwarsapi.utils.MissionRewardComparator;
+import com.juan.starwarsapi.utils.MissionRewardPerHourComparator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.io.IOException;
 import java.net.URI;
-import java.time.LocalDateTime;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -105,6 +98,21 @@ public class MissionController {
         if(m == null)
             return ResponseEntity.notFound().build();
         return ResponseEntity.ok(m.toString());
+    }
+
+    @RequestMapping(value = "/missions/next", method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> getNextMissionByPriority(@RequestParam String criteria){
+        Mission m;
+        switch (criteria) {
+            case "reward":
+                m = missionService.getMissionBy(new MissionRewardComparator());
+                return ResponseEntity.ok(m != null?m.toString():"no missions left");
+            case "rewardPerHour":
+                m = missionService.getMissionBy(new MissionRewardPerHourComparator());
+                return ResponseEntity.ok(m != null?m.toString():"no missions left");
+            default: return ResponseEntity.badRequest().build();
+        }
     }
 }
 
