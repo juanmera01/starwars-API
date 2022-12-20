@@ -13,9 +13,9 @@ public interface MissionRepository extends CrudRepository<Mission, Long> {
 
     Page<Mission> findAll(Pageable pageable);
 
-    @Query("SELECT m FROM Mission m WHERE ?1 IN (m.captains) AND m.id <> ?2")
-    List<Mission> findMissionByCaptain(People person, long mission_id);
+    @Query("SELECT m FROM Mission m WHERE m.id <> ?2 AND ?1 in (SELECT c FROM m.captains c)")
+    List<Mission> findMissionByCaptain(People p, long mission_id);
 
-    @Query("SELECT m FROM Mission m join m.captains c WHERE lower(c.name) like lower (?1)")
+    @Query("SELECT m FROM People p JOIN p.mission m WHERE LOWER(p.name) LIKE LOWER (?1)")
     Page<Mission> findMissionByCaptainNames(Pageable pageable, String names);
 }

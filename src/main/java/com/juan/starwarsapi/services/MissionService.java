@@ -28,8 +28,13 @@ public class MissionService {
     @Autowired
     private PlanetRepository planetRepository;
 
-
+    /**
+     * Validate and create a mission
+     * @param missionRequest
+     * @return mission created
+     */
     public Mission addMission(CreateMissionRequest missionRequest){
+
         List<String> errors = validateParams(missionRequest);
         if(!errors.isEmpty())
             return null;
@@ -37,19 +42,19 @@ public class MissionService {
         missionRepository.save(mission);
         mission.setInitialDate(missionRequest.initialDate);
         mission.setCrew(missionRequest.crew);
-        for(People p : missionRequest.people_ids
-                .stream().map(id -> peopleRepository.findById(id).orElse(null)).toList()) {
-            mission.getCaptains().add(p);
-        }
+
+        Set<People> captains = new HashSet<>(missionRequest.people_ids
+                .stream().map(id -> peopleRepository.findById(id).orElse(null)).toList());
         Starship starship = starshipRepository.findById(missionRequest.starship_id).orElse(null);
-        mission.setStarShips(starship);
-        for(Planet p : missionRequest.planet_ids
-                .stream().map(id -> planetRepository.findById(id).orElse(null)).toList()) {
-            mission.getPlanets().add(p);
-        }
-        mission.setDuration(calculateDuration(mission));
-        errors = validate(mission);
+        Set<Planet> planets = new HashSet<>(missionRequest.planet_ids
+                .stream().map(id -> planetRepository.findById(id).orElse(null)).toList());
+
+        errors = validate(mission, starship, captains);
+
         if(errors.size() == 0) {
+            captains.forEach(c -> Binder.bind(mission, c));
+            Binder.bind(mission, starship);
+            planets.forEach(p -> Binder.bind(mission, p));
             mission.setDuration(calculateDuration(mission));
             return mission;
         }else{
@@ -69,40 +74,44 @@ public class MissionService {
             errors.add("Error.create.mission.initialDate");
         if(starshipRepository.findById(missionRequest.starship_id).isEmpty())
             errors.add("Error.create.mission.starship.empty");
-        if(missionRequest.people_ids.size() < 1)
+        if(missionRequest.people_ids == null || missionRequest.people_ids.size() < 1)
             errors.add("Error.create.mission.captains.empty");
-        if(missionRequest.planet_ids.size() < 1)
+        if(missionRequest.planet_ids == null || missionRequest.planet_ids.size() < 1)
             errors.add("Error.create.mission.planets.empty");
-        for(long id : missionRequest.people_ids)
-            if(peopleRepository.findById(id).isEmpty())
-                errors.add("Error.create.mission.captains.nonexists");
-        for(long id : missionRequest.planet_ids)
-            if(planetRepository.findById(id).isEmpty())
-                errors.add("Error.create.mission.planet.nonexists");
+        if(missionRequest.planet_ids != null && missionRequest.people_ids != null) {
+            for (long id : missionRequest.people_ids)
+                if (peopleRepository.findById(id).isEmpty())
+                    errors.add("Error.create.mission.captains.nonexists");
+            for (long id : missionRequest.planet_ids)
+                if (planetRepository.findById(id).isEmpty())
+                    errors.add("Error.create.mission.planet.nonexists");
+        }
         if(missionRequest.crew < 1)
             errors.add("Error.create.mission.crew.empty");
         return errors;
     }
 
     /**
-     * @return All Missions
+     * @return All Missions paginated
      */
     public Page<Mission> getAllMissions(Pageable pageable, String captainNames){
         if(captainNames.equals(""))
             return missionRepository.findAll(pageable);
         else
-            return missionRepository.findMissionByCaptainNames(pageable, captainNames);
+            return missionRepository.findMissionByCaptainNames(pageable, '%'+captainNames+'%');
     }
 
     /**
+     * Get mission by id
      * @param id
-     * @return mission
+     * @return mission (or null if it does not exists)
      */
     public Mission getMissionById(long id){
         return missionRepository.findById(id).orElse(null);
     }
 
     /**
+     * Calculate the mission duration by the planets, the crew and the captains
      * @param mission
      * @return duration
      */
@@ -125,25 +134,24 @@ public class MissionService {
      * @param mission
      * @return errors
      */
-    public List<String> validate(Mission mission){
+    public List<String> validate(Mission mission, Starship starship, Set<People> captains){
         List<String> errors = new ArrayList<>();
 
-       if(mission.getStarShips().getPilots().size() > 0){  // there is at least one last pilot
-            Set<People> intersection = mission.getStarShips().getPilots();
-            intersection.retainAll(mission.getCaptains());
+       if(starship.getPilots().size() > 0){  // there is at least one last pilot
+            Set<People> intersection = starship.getPilots();
+            intersection.retainAll(captains);
             if(intersection.isEmpty()){
                 errors.add("Error.create.mission.pilots");
             }
         }
         // min crew
-        if(mission.getCaptains().size()+mission.getCrew() < mission.getStarShips().getCrew())
+        if(captains.size() + mission.getCrew() < starship.getCrew())
             errors.add( "Error.create.mission.crew.size");
         // max crew + passengers
-        if(mission.getCaptains().size()+mission.getCrew() >
-                mission.getStarShips().getCrew()+mission.getStarShips().getPassengers()
-                && mission.getStarShips().getPassengers() > 0 )
+        if(captains.size() + mission.getCrew() > starship.getCrew() + starship.getPassengers()
+                && starship.getPassengers() > 0 )
             errors.add("Error.create.mission.passengers.size");
-        if(checkCaptains(mission.getCaptains(), mission)) // any captain in other mission
+        if(checkCaptains(captains, mission)) // any captain in other mission
             errors.add( "Error.create.mission.captains.busy");
         return errors;
     }
@@ -156,7 +164,7 @@ public class MissionService {
      */
     private boolean checkCaptains(Set<People> captains, Mission mission) {
         for(People p : captains){
-            if(!missionRepository.findMissionByCaptain(p,mission.getId()).isEmpty())
+            if(!missionRepository.findMissionByCaptain(p, mission.getId()).isEmpty())
                 return true;
         }
         return false;
@@ -166,12 +174,28 @@ public class MissionService {
      * Add manually a mission
      */
     public void loadTestData(){
-        CreateMissionRequest m = new CreateMissionRequest();
-        m.initialDate = LocalDateTime.now();
-        m.crew = 6;
-        m.starship_id = 3L;
-        m.people_ids = List.of(3L);
-        m.planet_ids = List.of(3L);
-        addMission(m);
+        CreateMissionRequest m1 = new CreateMissionRequest();
+        m1.initialDate = LocalDateTime.now();
+        m1.crew = 25;
+        m1.starship_id = 3L;
+        m1.people_ids = List.of(3L);
+        m1.planet_ids = List.of(3L);
+        addMission(m1);
+
+        CreateMissionRequest m2 = new CreateMissionRequest();
+        m2.initialDate = LocalDateTime.now();
+        m2.crew = 50000;
+        m2.starship_id = 2L;
+        m2.people_ids = List.of(2L);
+        m2.planet_ids = List.of(2L);
+        addMission(m2);
+
+        CreateMissionRequest m3 = new CreateMissionRequest();
+        m3.initialDate = LocalDateTime.now();
+        m3.crew = 342960;
+        m3.starship_id = 4L;
+        m3.people_ids = List.of(4L);
+        m3.planet_ids = List.of(4L);
+        addMission(m3);
     }
 }

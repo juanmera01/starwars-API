@@ -25,9 +25,9 @@ public class StarwarsApiApplication {
 
     @PostConstruct
     public void postcontruct() {
-        //starshipService.loadData();
-        //peopleService.loadData();
-        //planetService.loadData();
+        starshipService.loadData();
+        peopleService.loadData();
+        planetService.loadData();
         missionService.loadTestData();
     }
 

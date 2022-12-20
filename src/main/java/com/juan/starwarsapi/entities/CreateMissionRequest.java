@@ -1,5 +1,6 @@
 package com.juan.starwarsapi.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.cglib.core.Local;
 
 import java.time.LocalDateTime;
@@ -7,6 +8,7 @@ import java.util.List;
 
 public class CreateMissionRequest {
 
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss[.SSS][.SS][.S]")
     public LocalDateTime initialDate;
     public long starship_id;
     public List<Long> people_ids;

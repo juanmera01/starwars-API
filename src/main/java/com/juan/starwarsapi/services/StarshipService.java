@@ -30,11 +30,21 @@ public class StarshipService {
     @Autowired
     private PeopleRepository peopleRepository;
 
+    /**
+     * Get a starship by id
+     * @param id
+     * @return starship (or null if it does not exists)
+     */
     public Starship getById(long id){
         Optional<Starship> ostarship = starshipRepository.findById(id);
         return ostarship.orElse(null);
     }
 
+
+    /**
+     * Make a request to starwars API to load, parse and save starship data
+     * URI: https://swapi.dev/api/starships/{page}
+     */
     public void loadData() {
         Gson gson = new GsonBuilder()
                 .excludeFieldsWithoutExposeAnnotation()
@@ -52,11 +62,6 @@ public class StarshipService {
             for (JsonElement o : json.get("results").getAsJsonArray()) {
                 Starship starship = gson.fromJson(o, Starship.class);
                 Set<People> pilots = new HashSet<>();
-                for(JsonElement pilotUrl : o.getAsJsonObject().get("pilots").getAsJsonArray()){
-                    People pilot = restTemplate.getForObject(pilotUrl.getAsString(), People.class);
-                    peopleRepository.save(pilot);
-                    Binder.bind(starship, pilot);
-                }
                 starship.setPilots(pilots);
                 starshipRepository.save(starship);
             }

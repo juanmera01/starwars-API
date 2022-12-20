@@ -22,11 +22,20 @@ public class PlanetService {
     @Autowired
     private PlanetRepository planetRepository;
 
+    /**
+     * Get a planet by id
+     * @param id
+     * @return planet (or null if it does not exists)
+     */
     public Planet getById(long id){
         Optional<Planet> oplanet = planetRepository.findById(id);
         return oplanet.orElse(null);
     }
 
+    /**
+     * Make a request to starwars API to load, parse and save planets data
+     * URI: https://swapi.dev/api/planets/{page}
+     */
     public void loadData(){
         Gson gson = new GsonBuilder()
                 .excludeFieldsWithoutExposeAnnotation()

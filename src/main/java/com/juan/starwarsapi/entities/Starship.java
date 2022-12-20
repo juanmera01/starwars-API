@@ -297,7 +297,7 @@ public class Starship {
         nubmerParts = number.split(",");
         if(nubmerParts.length > 1)
             return Integer.parseInt(nubmerParts[0]+nubmerParts[1]);
-        return Integer.parseInt(passengers);
+        return Integer.parseInt(number);
     }
 
 }

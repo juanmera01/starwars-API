@@ -28,11 +28,20 @@ public class PeopleService {
     @Autowired
     private StarshipRepository starshipRepository;
 
+    /**
+     * Get a person by id
+     * @param id
+     * @return people (or null if it does not exists)
+     */
     public People getById(long id){
         Optional<People> opeople = peopleRepository.findById(id);
         return opeople.orElse(null);
     }
 
+    /**
+     * Make a request to starwars API to load, parse and save people data
+     * URI: https://swapi.dev/api/people/{page}
+     */
     public void loadData() {
         Gson gson = new GsonBuilder()
                 .excludeFieldsWithoutExposeAnnotation()
