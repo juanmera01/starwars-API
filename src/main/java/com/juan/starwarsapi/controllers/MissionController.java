@@ -56,13 +56,10 @@ public class MissionController {
             (Pageable pageable, @RequestParam(required = false, defaultValue = "") String search) {
         Page<Mission> missionPage = new PageImpl<Mission>(new LinkedList<Mission>());
         missionPage = missionService.getAllMissions(pageable, search);
-        StringBuilder sbMission = new StringBuilder(); //TODO añadir como json un next y un prev y results: ...
-
-
+        StringBuilder sbMission = new StringBuilder();
         HttpServletRequest request =
                 ((ServletRequestAttributes)(Objects.requireNonNull(RequestContextHolder.getRequestAttributes())))
                         .getRequest();
-
         sbMission.append("\"current\":\""+ request.getRequestURL().toString() + "?" + request.getQueryString() + "\",");
         sbMission.append("\"results\":[");
         for(Mission m : missionPage.getContent()){
