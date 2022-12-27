@@ -7,6 +7,8 @@ authentication of any kind. It communicates with another system through another 
 people and planets. It uses json as response format.
 It is developed using java Spring framework and a HSQLDB as a persistence system.
 
+You can find th documentation of the existing StarWars API [here](https://swapi.dev/documentation)
+
 ## How to run
 For the execution of the application, it will be enough to execute the database as a local server. 
 To do this we execute the selected file from the bin folder.
