@@ -164,7 +164,6 @@ executions:
 The persistence mechanism chosen is a local HSQLDB database. For the simplicity and 
 agility it brings to the development. Also for the possibility of sending this database empty and not having to 
 empty and not having to have any cloud storage provider with its corresponding cost. 
-corresponding cost.
 JPA is also chosen as the persistence api for data access.
 The database uploaded along with the code to the repository is empty. Along with the upload of the 
 Star Wars api data some test missions are created.
